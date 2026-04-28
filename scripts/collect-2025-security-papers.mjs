@@ -55,12 +55,21 @@ async function main() {
   await mkdir(path.join(root, "data"), { recursive: true })
   await mkdir(path.join(root, "content", "papers", String(year)), { recursive: true })
 
-  const allPapers = []
+  let allPapers = []
   for (const venue of selectedVenues) {
     console.log(`Fetching ${venue} ${year} from DBLP`)
     const papers = await fetchVenue(venue)
     console.log(`  ${papers.length} records`)
     allPapers.push(...papers)
+  }
+
+  if (args.venues.length) {
+    const existing = await readExistingPapers()
+    const selected = new Set(selectedVenues)
+    allPapers = [
+      ...existing.filter((paper) => !selected.has(paper.venue)),
+      ...allPapers,
+    ]
   }
 
   allPapers.sort((a, b) => {
@@ -92,6 +101,17 @@ async function main() {
   await writeDataFiles(allPapers)
   await writeMarkdownIndexes(allPapers)
   console.log("Done")
+}
+
+async function readExistingPapers() {
+  const jsonPath = path.join(root, "data", "papers-2025-security.json")
+  if (!existsSync(jsonPath)) return []
+  try {
+    const raw = await readFile(jsonPath, "utf8")
+    return JSON.parse(raw)
+  } catch {
+    return []
+  }
 }
 
 function parseArgs(raw) {

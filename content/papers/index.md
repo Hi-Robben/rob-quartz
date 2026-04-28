@@ -11,6 +11,7 @@ tags:
 
 ## 入口
 
+- [[2025 安全四大会论文索引]]
 - [[论文收集箱]]
 - [[论文获取与元数据]]
 - [[venues/index|安全四大会]]
@@ -43,3 +44,10 @@ content/papers/2026/CCS/example-paper-title.md
 3. 实验是否支撑结论？
 4. 能不能复现，复现成本在哪里？
 5. 这条线下一篇该读什么？
+
+## 自动化
+
+2025 四大会论文表由 `scripts/collect-2025-security-papers.mjs` 生成。数据文件在：
+
+- `data/papers-2025-security.csv`
+- `data/papers-2025-security.json`

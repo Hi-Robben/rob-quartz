@@ -59,9 +59,7 @@ function toRis(paper, { includePdfLinkAttachment }) {
     paper.pdf?.source ? `PDF source: ${paper.pdf.source}` : "",
     paper.pdf?.status ? `PDF status: ${paper.pdf.status}` : "",
   ].filter(Boolean)
-  for (const note of notes) {
-    lines.push(`N1  - ${note}`)
-  }
+  lines.push(`N1  - ${notes.map(clean).join(" | ")}`)
 
   if (includePdfLinkAttachment && paper.pdf?.url) {
     lines.push(`L1  - ${clean(paper.pdf.url)}`)
